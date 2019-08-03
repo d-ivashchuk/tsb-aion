@@ -1,3 +1,5 @@
-const open = require("amqplib").connect("amqp://guest:guest@localhost");
+require("dotenv").config();
 
-module.exports = open
+const open = require("amqplib").connect(process.env.AMPQ_CONNECTION_STRING);
+
+module.exports = open;

@@ -9,27 +9,27 @@ const mongoConnectionString = `mongodb+srv://${process.env.MONGO_USER}:${
 }?retryWrites=true`;
 
 const agenda = new Agenda({
-    db: {
-        address: mongoConnectionString,
-        collection: "statsJob"
-    },
-    processEvery: "1 minute"
+  db: {
+    address: mongoConnectionString,
+    collection: "statsJob"
+  },
+  processEvery: "1 minute"
 });
 
 agenda.on("ready", async () => {
-    agenda.purge()
-    agenda.define("runStats", async (job, done) => {
-        runStats({
-            done
-        });
+  agenda.purge();
+  agenda.define("runStats", async (job, done) => {
+    runStats({
+      done
     });
-    agenda.start();
-    const job = agenda.create('runStats');
-    job.repeatEvery('3 minutes', {
-        skipImmediate: true
-    });
-    await job.save();
-    console.log('😎 New job added successfully');
+  });
+  agenda.start();
+  const job = agenda.create("runStats");
+  job.repeatEvery("30 seconds", {
+    skipImmediate: true
+  });
+  await job.save();
+  console.log("😎 New job added successfully");
 });
 
 module.exports = agenda;
