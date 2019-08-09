@@ -25,7 +25,7 @@ agenda.on("ready", async () => {
   });
   agenda.start();
   const job = agenda.create("runStats");
-  job.repeatEvery("3 hours", {
+  job.repeatEvery("24 hours", {
     skipImmediate: true
   });
   await job.save();
