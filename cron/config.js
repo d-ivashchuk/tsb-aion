@@ -1,6 +1,7 @@
 const Agenda = require("agenda");
 
 const runStats = require("./jobs");
+const User = require("../models/User");
 
 const mongoConnectionString = `mongodb+srv://${process.env.MONGO_USER}:${
   process.env.MONGO_PASSWORD
