@@ -3,16 +3,12 @@ const Agenda = require("agenda");
 const runStats = require("./jobs");
 const User = require("../models/User");
 
-const mongoConnectionString = `mongodb+srv://${process.env.MONGO_USER}:${
-  process.env.MONGO_PASSWORD
-}@${process.env.MONGO_CLUSTER_NAME}.mongodb.net/${
-  process.env.MONGO_DB
-}?retryWrites=true`;
+const mongoConnectionString = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER_NAME}.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`;
 
 const agenda = new Agenda({
   db: {
     address: mongoConnectionString,
-    collection: "statsJob"
+    collection: "statsJob_StressTest"
   },
   processEvery: "1 minute"
 });
@@ -26,9 +22,10 @@ agenda.on("ready", async () => {
   });
   agenda.start();
   const job = agenda.create("runStats");
-  job.repeatEvery("24 hours", {
-    skipImmediate: true
-  });
+  job.repeatEvery("20 minutes");
+  // job.repeatEvery("20 minutes", {
+  //   skipImmediate: true
+  // });
   await job.save();
   console.log("😎 New job added successfully");
 });

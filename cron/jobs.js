@@ -9,19 +9,22 @@ const runStats = async ({ done }) => {
     userMongoId: v._id
   }));
   if (listOfTwitterIds.length > 0) {
-    listOfTwitterIds.forEach(v =>
-      open
-        .then(function(conn) {
-          return conn.createChannel();
-        })
-        .then(function(ch) {
-          console.log(`😎 Ran crawler for ${listOfTwitterIds.length} users`);
-          return ch.assertQueue(q).then(function(ok) {
-            return ch.sendToQueue(q, Buffer.from(JSON.stringify(v)));
-          });
-        })
-        .catch(console.warn)
-    );
+    open
+      .then(function(conn) {
+        return conn.createChannel();
+      })
+      .then(function(ch) {
+        listOfTwitterIds.forEach(v => {
+          return ch
+            .assertQueue(q)
+            .then(function(ok) {
+              return ch.sendToQueue(q, Buffer.from(JSON.stringify(v)));
+            })
+            .catch(err => console.log(err));
+        });
+        console.log(`😎 Ran crawler for ${listOfTwitterIds.length} users`);
+      })
+      .catch(err => console.log(err));
   } else {
     console.log("😭 No users to run statistics crawler");
   }
