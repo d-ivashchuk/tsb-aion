@@ -8,7 +8,7 @@ const mongoConnectionString = `mongodb+srv://${process.env.MONGO_USER}:${process
 const agenda = new Agenda({
   db: {
     address: mongoConnectionString,
-    collection: "statsJob_StressTest"
+    collection: "statsJob"
   },
   processEvery: "1 minute"
 });
@@ -22,10 +22,9 @@ agenda.on("ready", async () => {
   });
   agenda.start();
   const job = agenda.create("runStats");
-  job.repeatEvery("20 minutes");
-  // job.repeatEvery("20 minutes", {
-  //   skipImmediate: true
-  // });
+  job.repeatEvery("24 hours", {
+    skipImmediate: true
+  });
   await job.save();
   console.log("😎 New job added successfully");
 });
