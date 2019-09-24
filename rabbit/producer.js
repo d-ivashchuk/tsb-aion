@@ -1,5 +1,6 @@
 require("dotenv").config();
+const ampq = require("amqp-connection-manager");
 
-const open = require("amqplib").connect(process.env.AMPQ_CONNECTION_STRING);
+const connection = ampq.connect([process.env.AMPQ_CONNECTION_STRING]);
 
-module.exports = open;
+module.exports = connection;

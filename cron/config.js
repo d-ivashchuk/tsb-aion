@@ -23,9 +23,6 @@ agenda.on("ready", async () => {
   agenda.start();
   const job = agenda.create("runStats");
   job.repeatEvery("20 minutes");
-  // job.repeatEvery("20 minutes", {
-  //   skipImmediate: true
-  // });
   await job.save();
   console.log("😎 New job added successfully");
 });
